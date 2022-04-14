@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">SanaGs</string>
+    <string name="unkown_error">خطای ناشناس</string>
+    <string name="connectionError">عدم برقراری ارتباط با سرور. دوباره تلاش کنید</string>
+    <string name="backArrow">Back arrow</string>
+    <string name="register">ثبت نام</string>
+    <string name="enterInfo">لطفا اطلاعات ورود خود را وارد نمایید</string>
+    <string name="check">check</string>
+    <string name="name">نام</string>
+    <string name="lastName">نام خانوادگی</string>
+    <string name="mobileNumber">تلفن همراه</string>
+    <string name="phoneNumber">تلفن ثابت</string>
+    <string name="address">آدرس دقیق</string>
+    <string name="gender">جنسیت</string>
+    <string name="nextStep">مرحله بعد</string>
+    <string name="sendData">ارسال اطلاعات</string>
+    <string name="mapMarker">Map Marker</string>
+    <string name="verifyLocation">تایید موقعیت</string>
+    <string name="dataSentSuccessfully">اطلاعات با موفقیت ارسال شد</string>
+    <string name="enterName">نام خود را وارد کنید</string>
+    <string name="enterNameProperly">نام خود را بدرستی وارد کنید</string>
+    <string name="enterLastName">نام خانوادگی خود را وارد کنید</string>
+    <string name="enterNameLastProperly">نام خانوادگی خود را بدرستی وارد کنید</string>
+    <string name="enterMobile">شماره همراه خود را وارد کنید</string>
+    <string name="enterMobileProperly">شماره موبایل خود را بدرستی وارد کنید</string>
+    <string name="enterphone">شماره تلفن ثابت خود را وارد کنید</string>
+    <string name="enterPhoneProperly">شماره تلفن ثابت خود را بدرستی وارد کنید</string>
+    <string name="enterAddress">آدرس خود را وارد کنید</string>
+    <string name="enterAddressProperly">آدرس خود را بدرستی وارد کنید</string>
+    <string name="address1">آدرس</string>
+    <string name="add">ِAdd</string>
+    <string name="locationSuccessfullyRecieved">موقعیت شما دریافت شد</string>
+    <string name="tryAgain">تلاش دوباره</string>
+</resources>
