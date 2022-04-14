@@ -76,262 +76,266 @@ fun SetInfoScreen(
         }
     }
 
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(8.dp)
-    ) {
-
+    Box(modifier = Modifier.fillMaxSize()) {
         if (state.showMap) {
-            item {
-                MapScreen {
-                    viewModel.onEvent(SetInfoScreenEvent.EnteredLatLng(it))
-                }
+            MapScreen {
+                viewModel.onEvent(SetInfoScreenEvent.EnteredLatLng(it))
             }
         } else {
-            stickyHeader {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    IconButton(
-                        onClick = { onPopBackStack() }
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(8.dp)
+            ) {
+
+                stickyHeader {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        Icon(
-                            imageVector = Icons.Rounded.ArrowBack,
-                            contentDescription = stringResource(
-                                id = R.string.backArrow
+                        IconButton(
+                            onClick = { onPopBackStack() }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Rounded.ArrowBack,
+                                contentDescription = stringResource(
+                                    id = R.string.backArrow
+                                )
+                            )
+                        }
+                        Text(
+                            text = stringResource(id = R.string.register),
+                            style = MaterialTheme.typography.h3
+                        )
+                    }
+                }
+
+
+
+                item {
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Box(modifier = Modifier.fillMaxWidth()) {
+                        Text(
+                            text = stringResource(id = R.string.enterInfo),
+                            style = MaterialTheme.typography.body1,
+                            modifier = Modifier.align(Alignment.CenterEnd)
+                        )
+                    }
+                }
+
+                item {
+                    Spacer(modifier = Modifier.height(32.dp))
+                    CustomTextField(
+                        text = firstNameState.text,
+                        onValueChange = {
+                            viewModel.onEvent(SetInfoScreenEvent.EnteredFirstName(it))
+                        },
+                        textFieldTitle = R.string.name,
+                        error = when (firstNameState.error) {
+                            is InfoError.FieldEmpty -> stringResource(id = R.string.enterName)
+                            is InfoError.InputTooShort -> stringResource(id = R.string.enterNameProperly)
+                            else -> ""
+                        },
+                        isEntryValid = firstNameState.text.length > 2,
+                        imeAction = ImeAction.Next,
+                        keyboardActions = KeyboardActions(
+                            onNext = {
+                                focusManager.moveFocus(FocusDirection.Down)
+                            }
+                        )
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    CustomTextField(
+                        text = lastNameState.text,
+                        onValueChange = {
+                            viewModel.onEvent(SetInfoScreenEvent.EnteredLastName(it))
+                        },
+                        textFieldTitle = R.string.lastName,
+                        error = when (lastNameState.error) {
+                            is InfoError.FieldEmpty -> stringResource(id = R.string.enterLastName)
+                            is InfoError.InputTooShort -> stringResource(id = R.string.enterNameLastProperly)
+                            else -> ""
+                        },
+                        isEntryValid = lastNameState.text.length > 2,
+                        imeAction = ImeAction.Next,
+                        keyboardActions = KeyboardActions(
+                            onNext = {
+                                focusManager.moveFocus(FocusDirection.Down)
+                            }
+                        )
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    CustomTextField(
+                        text = mobileState.text,
+                        onValueChange = {
+                            viewModel.onEvent(SetInfoScreenEvent.EnteredMobile(it))
+                        },
+                        isEntryValid = mobileState.text.length == 11,
+                        textFieldTitle = R.string.mobileNumber,
+                        error = when (mobileState.error) {
+                            is InfoError.FieldEmpty -> stringResource(id = R.string.enterMobile)
+                            is InfoError.InputTooShort -> stringResource(id = R.string.enterMobileProperly)
+                            else -> ""
+                        },
+                        imeAction = ImeAction.Next,
+                        keyboardActions = KeyboardActions(
+                            onNext = {
+                                focusManager.moveFocus(FocusDirection.Down)
+                            }
+                        )
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    CustomTextField(
+                        text = phoneState.text,
+                        onValueChange = {
+                            viewModel.onEvent(SetInfoScreenEvent.EnteredPhone(it))
+                        },
+                        textFieldTitle = R.string.phoneNumber,
+                        error = when (phoneState.error) {
+                            is InfoError.FieldEmpty -> stringResource(id = R.string.enterphone)
+                            is InfoError.InputTooShort -> stringResource(id = R.string.enterPhoneProperly)
+                            else -> ""
+                        },
+                        isEntryValid = phoneState.text.length > 8,
+                        imeAction = ImeAction.Next,
+                        keyboardActions = KeyboardActions(
+                            onNext = {
+                                focusManager.moveFocus(FocusDirection.Down)
+                            }
+                        )
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    CustomTextField(
+                        text = addressState.text,
+                        onValueChange = {
+                            viewModel.onEvent(SetInfoScreenEvent.EnteredAddress(it))
+                        },
+                        singleLine = false,
+                        maxLines = 3,
+                        isEntryValid = addressState.text.length > 5,
+                        textFieldTitle = R.string.address,
+                        error = when (addressState.error) {
+                            is InfoError.FieldEmpty -> stringResource(id = R.string.enterAddress)
+                            is InfoError.InputTooShort -> stringResource(id = R.string.enterAddressProperly)
+                            else -> ""
+                        },
+                        imeAction = ImeAction.Done,
+                        keyboardActions = KeyboardActions(
+                            onDone = {
+                                keyboardController?.hide()
+                            }
+                        )
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(4.dp))
+                                .border(
+                                    1.dp,
+                                    MaterialTheme.colors.primary,
+                                    RoundedCornerShape(4.dp)
+                                ),
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            state.tabList.forEach { tab ->
+                                Text(
+                                    text = tab.type,
+                                    style = MaterialTheme.typography.body2.copy(
+                                        color = if (tab == state.selectedGender) MaterialTheme.colors.onPrimary else MaterialTheme.colors.onSurface.copy(
+                                            0.5f
+                                        ),
+                                        textAlign = TextAlign.Center
+                                    ),
+                                    modifier = Modifier
+                                        .clip(RoundedCornerShape(4.dp))
+                                        .background(
+                                            if (tab == state.selectedGender) MaterialTheme.colors.primary else MaterialTheme.colors.background
+                                        )
+                                        .clickable {
+                                            viewModel.onEvent(SetInfoScreenEvent.SelectedGender(tab))
+                                        }
+                                        .padding(10.dp)
+                                        .defaultMinSize(minWidth = 50.dp)
+                                )
+
+                            }
+                        }
+                        Text(
+                            text = stringResource(id = R.string.gender),
+                            style = MaterialTheme.typography.body2.copy(
+                                color = MaterialTheme.colors.primary
                             )
                         )
                     }
-                    Text(
-                        text = stringResource(id = R.string.register),
-                        style = MaterialTheme.typography.h3
-                    )
                 }
-            }
-
-        }
-
-
-        item {
-            Spacer(modifier = Modifier.height(16.dp))
-            Box(modifier = Modifier.fillMaxWidth()) {
-                Text(
-                    text = stringResource(id = R.string.enterInfo),
-                    style = MaterialTheme.typography.body1,
-                    modifier = Modifier.align(Alignment.CenterEnd)
-                )
-            }
-        }
-
-        item {
-            Spacer(modifier = Modifier.height(32.dp))
-            CustomTextField(
-                text = firstNameState.text,
-                onValueChange = {
-                    viewModel.onEvent(SetInfoScreenEvent.EnteredFirstName(it))
-                },
-                textFieldTitle = R.string.name,
-                error = when (firstNameState.error) {
-                    is InfoError.FieldEmpty -> stringResource(id = R.string.enterName)
-                    is InfoError.InputTooShort -> stringResource(id = R.string.enterNameProperly)
-                    else -> ""
-                },
-                isEntryValid = firstNameState.text.length > 2,
-                imeAction = ImeAction.Next,
-                keyboardActions = KeyboardActions(
-                    onNext = {
-                        focusManager.moveFocus(FocusDirection.Down)
-                    }
-                )
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            CustomTextField(
-                text = lastNameState.text,
-                onValueChange = {
-                    viewModel.onEvent(SetInfoScreenEvent.EnteredLastName(it))
-                },
-                textFieldTitle = R.string.lastName,
-                error = when (lastNameState.error) {
-                    is InfoError.FieldEmpty -> stringResource(id = R.string.enterLastName)
-                    is InfoError.InputTooShort -> stringResource(id = R.string.enterNameLastProperly)
-                    else -> ""
-                },
-                isEntryValid = lastNameState.text.length > 2,
-                imeAction = ImeAction.Next,
-                keyboardActions = KeyboardActions(
-                    onNext = {
-                        focusManager.moveFocus(FocusDirection.Down)
-                    }
-                )
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            CustomTextField(
-                text = mobileState.text,
-                onValueChange = {
-                    viewModel.onEvent(SetInfoScreenEvent.EnteredMobile(it))
-                },
-                isEntryValid = mobileState.text.length == 11,
-                textFieldTitle = R.string.mobileNumber,
-                error = when (mobileState.error) {
-                    is InfoError.FieldEmpty -> stringResource(id = R.string.enterMobile)
-                    is InfoError.InputTooShort -> stringResource(id = R.string.enterMobileProperly)
-                    else -> ""
-                },
-                imeAction = ImeAction.Next,
-                keyboardActions = KeyboardActions(
-                    onNext = {
-                        focusManager.moveFocus(FocusDirection.Down)
-                    }
-                )
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            CustomTextField(
-                text = phoneState.text,
-                onValueChange = {
-                    viewModel.onEvent(SetInfoScreenEvent.EnteredPhone(it))
-                },
-                textFieldTitle = R.string.phoneNumber,
-                error = when (phoneState.error) {
-                    is InfoError.FieldEmpty -> stringResource(id = R.string.enterphone)
-                    is InfoError.InputTooShort -> stringResource(id = R.string.enterPhoneProperly)
-                    else -> ""
-                },
-                isEntryValid = phoneState.text.length > 8,
-                imeAction = ImeAction.Next,
-                keyboardActions = KeyboardActions(
-                    onNext = {
-                        focusManager.moveFocus(FocusDirection.Down)
-                    }
-                )
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            CustomTextField(
-                text = addressState.text,
-                onValueChange = {
-                    viewModel.onEvent(SetInfoScreenEvent.EnteredAddress(it))
-                },
-                singleLine = false,
-                maxLines = 3,
-                isEntryValid = addressState.text.length > 5,
-                textFieldTitle = R.string.address,
-                error = when (addressState.error) {
-                    is InfoError.FieldEmpty -> stringResource(id = R.string.enterAddress)
-                    is InfoError.InputTooShort -> stringResource(id = R.string.enterAddressProperly)
-                    else -> ""
-                },
-                imeAction = ImeAction.Done,
-                keyboardActions = KeyboardActions(
-                    onDone = {
-                        keyboardController?.hide()
-                    }
-                )
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Row(
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(4.dp))
-                        .border(
-                            1.dp,
-                            MaterialTheme.colors.primary,
-                            RoundedCornerShape(4.dp)
-                        ),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    state.tabList.forEach { tab ->
-                        Text(
-                            text = tab.type,
-                            style = MaterialTheme.typography.body2.copy(
-                                color = if (tab == state.selectedGender) MaterialTheme.colors.onPrimary else MaterialTheme.colors.onSurface.copy(
-                                    0.5f
+                item {
+                    if (state.latLng != null) {
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Box(modifier = Modifier.fillMaxWidth()) {
+                            Text(
+                                text = stringResource(id = R.string.locationSuccessfullyRecieved),
+                                style = MaterialTheme.typography.body2.copy(
+                                    color = Green
                                 ),
-                                textAlign = TextAlign.Center
+                                modifier = Modifier
+                                    .align(Center)
+                                    .padding(16.dp)
+                            )
+                        }
+
+                    }
+                }
+
+                item {
+                    Spacer(modifier = Modifier.height(32.dp))
+                    if (state.isLoading) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(8.dp)
+                        ) {
+                            CircularProgressIndicator(
+                                modifier = Modifier.align(Alignment.Center)
+                            )
+                        }
+                    } else {
+                        Button(
+                            onClick = {
+                                if (state.latLng != null)
+                                    viewModel.onEvent(SetInfoScreenEvent.OnSendDataClicked)
+                                else
+                                    viewModel.onEvent(SetInfoScreenEvent.NextStepClicked)
+                            },
+                            colors = ButtonDefaults.buttonColors(
+                                backgroundColor = Green,
+                                contentColor = Color.White
                             ),
                             modifier = Modifier
-                                .clip(RoundedCornerShape(4.dp))
-                                .background(
-                                    if (tab == state.selectedGender) MaterialTheme.colors.primary else MaterialTheme.colors.background
-                                )
-                                .clickable {
-                                    viewModel.onEvent(SetInfoScreenEvent.SelectedGender(tab))
-                                }
-                                .padding(10.dp)
-                                .defaultMinSize(minWidth = 50.dp)
-                        )
+                                .fillMaxWidth()
+                                .padding(horizontal = 8.dp)
+                        ) {
+                            Text(
+                                text = state.latLng?.let {
+                                    stringResource(id = R.string.sendData)
+                                } ?: stringResource(id = R.string.nextStep),
+                                style = MaterialTheme.typography.body1
+                            )
+                        }
 
                     }
                 }
-                Text(
-                    text = stringResource(id = R.string.gender),
-                    style = MaterialTheme.typography.body2.copy(
-                        color = MaterialTheme.colors.primary
-                    )
-                )
-            }
-        }
-        item {
-            if (state.latLng != null) {
-                Spacer(modifier = Modifier.height(16.dp))
-                Box(modifier = Modifier.fillMaxWidth()) {
-                    Text(
-                        text = stringResource(id = R.string.locationSuccessfullyRecieved),
-                        style = MaterialTheme.typography.body2.copy(
-                            color = Green
-                        ),
-                        modifier = Modifier
-                            .align(Center)
-                            .padding(16.dp)
-                    )
-                }
 
             }
         }
-
-        item {
-            Spacer(modifier = Modifier.height(32.dp))
-            if (state.isLoading) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp)
-                ) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.align(Alignment.Center)
-                    )
-                }
-            } else {
-                Button(
-                    onClick = {
-                        viewModel.onEvent(SetInfoScreenEvent.NextStepClicked)
-                    },
-                    colors = ButtonDefaults.buttonColors(
-                        backgroundColor = Green,
-                        contentColor = Color.White
-                    ),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 8.dp)
-                ) {
-                    Text(
-                        text = state.latLng?.let {
-                            stringResource(id = R.string.sendData)
-                        } ?: stringResource(id = R.string.nextStep),
-                        style = MaterialTheme.typography.body1
-                    )
-                }
-
-            }
-        }
-
     }
+
 
 }

@@ -17,11 +17,11 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class SetInfoScreenViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
     private val useCase: SendUserDataUseCase
 ) : ViewModel() {
 
@@ -45,20 +45,6 @@ class SetInfoScreenViewModel @Inject constructor(
 
     private val _eventFlow = MutableSharedFlow<UiEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
-
-    private val lat = savedStateHandle.get<String>(Constants.LAT)
-    private val lng = savedStateHandle.get<String>(Constants.LNG)
-
-    init {
-        if (lat != null && lng != null) {
-            _state.value = state.value.copy(
-                latLng = LatLng(
-                    lat.toDouble(),
-                    lng.toDouble()
-                )
-            )
-        }
-    }
 
     fun onEvent(event: SetInfoScreenEvent) {
         when (event) {
@@ -93,9 +79,11 @@ class SetInfoScreenViewModel @Inject constructor(
                 )
             }
             SetInfoScreenEvent.NextStepClicked -> {
-                _state.value = state.value.copy(
-                    showMap = true
-                )
+                if (_state.value.latLng != null) {
+                    _state.value = state.value.copy(
+                        showMap = true
+                    )
+                }
             }
             SetInfoScreenEvent.OnSendDataClicked -> {
                 _state.value = state.value.copy(
@@ -179,6 +167,7 @@ class SetInfoScreenViewModel @Inject constructor(
 
             }
             is SetInfoScreenEvent.EnteredLatLng -> {
+                Timber.e("${event.latLng}")
                 _state.value = state.value.copy(
                     showMap = false,
                     latLng = event.latLng
